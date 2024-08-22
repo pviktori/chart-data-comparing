@@ -100,13 +100,6 @@
       *ngIf="loading"
       [message]="'chart_editor.getting_the_data_ready_for_you'"
     ></app-flexible-loading-layout>
-    <!-- <div
-      *ngIf="loading"
-      class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center spinner-wrapper flex-column bg-opacity-50 bg-white"
-    >
-      <img src="assets/images/spinner.gif" class="spinner-size" />
-      {{ 'chart_editor.getting_the_data_ready_for_you' | transloco }}
-    </div> -->
     <ng-container *ngIf="selectionChartPeriodActivated">
       <div
         class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center spinner-wrapper select-window bg-opacity-25 bg-black select-timestamp-background"

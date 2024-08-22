@@ -86,14 +86,6 @@
       *ngIf="loading$ | async"
       [message]="(loadingMessage$ | async) || ''"
     ></app-flexible-loading-layout>
-
-    <!-- <div
-      *ngIf="loading$ | async"
-      class="spinner-wrapper position-absolute w-100 h-100 d-flex align-items-center justify-content-center spinner-wrapper bg-opacity-50 bg-white pb-5 flex-column"
-    >
-      <img src="assets/images/spinner.gif" class="spinner-size" />
-      {{ loadingMessage$ | async | transloco }}
-    </div> -->
     <div
       *ngIf="lineChartDataSets?.[0]?.data?.length === 0"
       class="spinner-wrapper position-absolute w-100 h-100 d-flex align-items-center justify-content-center spinner-wrapper pb-5 flex-column"
