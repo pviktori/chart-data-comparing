@@ -1,0 +1,14 @@
+.file-dropzone {
+    min-height: 130px;
+    border-style: dashed !important;
+
+    .file-dropzone-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    &.drag-over {
+        border-style: solid !important;
+
+    }
+}

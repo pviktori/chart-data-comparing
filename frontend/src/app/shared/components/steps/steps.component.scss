@@ -1,0 +1,41 @@
+.steps-wrapper {
+  .step {
+    position: relative;
+
+    &::after {
+      content: '';
+      height: 12px;
+      background-color: #dadbde;
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translate(0, -50%);
+      z-index: -1;
+      transition: 0.2s;
+    }
+
+    &.active {
+      &::after {
+        background-color: #aedcf2;
+      }
+      .step-title {
+        background-color: #0090d4;
+      }
+    }
+    &-title {
+      height: 36px;
+      width: 36px;
+      background-color: #b5b8bd;
+      transition: 0.2s;
+    }
+
+    &:first-child {
+      width: auto !important;
+
+      &::after {
+        content: none;
+      }
+    }
+  }
+  z-index: 1;
+}

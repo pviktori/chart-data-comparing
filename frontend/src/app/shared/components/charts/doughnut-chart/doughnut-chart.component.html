@@ -1,0 +1,11 @@
+<div class="position-relative w-100 h-100" #canvasContainer>
+  <canvas
+    #backgroundChartContainer
+    id="backgroundChartContainer"
+    class="position-absolute w-100 h-100"
+  ></canvas>
+  <canvas #chartContainer id="chartContainer" class="position-absolute w-100 h-100"></canvas>
+  <div class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center text-data">
+    {{ currentData }}
+  </div>
+</div>

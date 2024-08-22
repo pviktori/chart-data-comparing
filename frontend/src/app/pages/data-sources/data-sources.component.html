@@ -1,0 +1,132 @@
+<ng-container *transloco="let t">
+  <div class="d-flex h-100 flex-column p-3">
+    <ng-container
+      [ngTemplateOutlet]="header"
+      [ngTemplateOutletContext]="{
+        dataSources: (dataSources$ | async)
+      }"
+    ></ng-container>
+
+    <div class="bg-white py-3 rounded-border-card h-100">
+      <ng-container
+        [ngTemplateOutlet]="dataSourcesTable"
+        [ngTemplateOutletContext]="{
+          dataSources: (dataSources$ | async)
+        }"
+      ></ng-container>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #header let-dataSources="dataSources">
+  <div class="d-flex justify-content-between p-3 pe-0">
+    <h5>{{ 'settings.data_source' | transloco }}</h5>
+    <div class="d-flex gap-3">
+      <button (click)="openUploadCsvFileModal()" class="btn btn-outline-primary btn-standard">
+        {{ 'settings.csv_file_upload' | transloco }}
+      </button>
+      <button (click)="openCreateModal()" class="btn btn-primary btn-standard">
+        {{ 'settings.add_data_source' | transloco }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #dataSourcesTable let-dataSources="dataSources">
+  <table class="table table-striped table-hover align-middle" *ngIf="dataSources">
+    <thead>
+      <tr [formGroup]="filtersForm">
+        <th scope="col" class="border-0 pb-3 ps-4">
+          <app-search
+            [list]="getDataSourcesPropertyFilterList(dataSources || [], 'name')"
+            formControlName="title"
+          >
+            {{ 'common.title' | transloco }}
+          </app-search>
+        </th>
+        <th scope="col" class="border-0 pb-3">
+          <app-search
+            [list]="getDataSourcesPropertyFilterList(dataSources || [], 'type')"
+            formControlName="type"
+          >
+            {{ 'settings.data_source_entity.type' | transloco }}
+          </app-search>
+        </th>
+        <th scope="col" class="border-0 pb-3">
+          <app-search
+            [list]="getDataSourcesPropertyFilterList(dataSources || [], 'url')"
+            formControlName="url"
+          >
+            {{ 'settings.source' | transloco }}
+          </app-search>
+        </th>
+        <th scope="col" class="border-0 pb-3">
+          <app-search
+            [list]="getDataSourcesPropertyFilterList(dataSources || [], 'table')"
+            formControlName="table"
+          >
+            {{ 'common.details' | transloco }}
+          </app-search>
+        </th>
+        <th scope="col" class="border-0 pb-3"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let dataSource of dataSources || []
+            | filter
+              : { value: filtersFormValues.title?.value, path: 'name' }
+              : { value: filtersFormValues.type?.value, path: 'type' }
+              : { value: filtersFormValues.url?.value, path: 'url' }
+              : { value: filtersFormValues.table?.value, path: 'table' }
+        "
+      >
+        <th class="border-0 ps-4" scope="row" role="button" (click)="openCreateModal(dataSource)">
+          {{ dataSource.name }}
+        </th>
+        <td class="border-0" role="button" (click)="openCreateModal(dataSource)">
+          <div class="d-flex align-items-center gap-3">
+            <img class="ds-icon" [src]="'./assets/images/' + dataSource.type + '-icon.png'" />
+            <span>{{ $any(databaseNames)[dataSource.type] }}</span>
+          </div>
+        </td>
+        <td class="border-0" role="button" (click)="openCreateModal(dataSource)">
+          <ng-container [ngSwitch]="dataSource.type">
+            <ng-container *ngSwitchCase="'influx'">
+              {{ dataSource.url }}
+            </ng-container>
+            <ng-container *ngSwitchCase="'timescale'">
+              {{ dataSource.host }}:{{ dataSource.port }}
+            </ng-container>
+            <ng-container *ngSwitchDefault></ng-container>
+          </ng-container>
+        </td>
+        <td class="border-0" role="button" (click)="openCreateModal(dataSource)">
+          <ng-container [ngSwitch]="dataSource.type">
+            <ng-container *ngSwitchCase="'influx'">
+              {{ dataSource.bucket }}
+            </ng-container>
+            <ng-container *ngSwitchCase="'timescale'">{{ dataSource.database }}</ng-container>
+            <ng-container *ngSwitchDefault></ng-container>
+          </ng-container>
+        </td>
+        <td class="border-0">
+          <div ngbDropdown>
+            <button class="btn btn-transparent btn-icon" ngbDropdownToggle>
+              <i class="material-icons mi-18">more_vert</i>
+            </button>
+            <ul ngbDropdownMenu>
+              <li ngbDropdownItem type="button" (click)="openCreateModal(dataSource)">
+                {{ 'common.edit' | transloco }}
+              </li>
+              <li ngbDropdownItem type="button" (click)="openDeleteConfirmationModal(dataSource)">
+                {{ 'common.delete' | transloco }}
+              </li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>

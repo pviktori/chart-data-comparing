@@ -1,0 +1,30 @@
+.date-selector {
+  ::ng-deep.input-group {
+    input {
+      max-width: 160px;
+    }
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: min-content min-content;
+  gap: 1rem;
+
+  .upper-chart {
+    grid-column: 1 / 3;
+  }
+}
+
+.chart-wrapper {
+  z-index: 2;
+}
+
+.no-data {
+  background-image: url('../../../../assets/images/no-data.png');
+  background-origin: border-box;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 130px;
+}

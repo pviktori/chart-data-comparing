@@ -1,0 +1,71 @@
+<div class="h-100 w-100">
+  <div class="wrapper">
+    <div class="grid p-1 mh-100 h-100 w-100 mh-100 mw-100">
+      <ng-container
+        [ngTemplateOutlet]="itemsTemplate"
+        [ngTemplateOutletContext]="{
+          isMultipleSelectionActive: gallerySelectionService.isMultipleSelectionActive$ | async,
+          itemsStatuses: itemsStatuses$ | async
+        }"
+      ></ng-container>
+    </div>
+    <div class="d-flex justify-content-between mt-1">
+      <button
+        class="btn"
+        [class.text-primary]="gallerySelectionService.isMultipleSelectionActive$ | async"
+        (click)="gallerySelectionService.toggleMultipleSelectionActive()"
+      >
+        Choose multiple selection
+      </button>
+
+      <div class="btn-group" *ngIf="currentPage$ | async as currentPage">
+        <button
+          class="btn border-0"
+          [disabled]="currentPage === 1"
+          (click)="onPage(currentPage - 1)"
+        >
+          <i class="material-icons">arrow_back_ios</i>
+        </button>
+        <button
+          *ngFor="let page of pages"
+          class="btn border-0"
+          [class.selected]="page === currentPage"
+          [disabled]="page === currentPage"
+          (click)="onPage(page)"
+        >
+          {{ page }}
+        </button>
+        <button
+          class="btn border-0"
+          [disabled]="currentPage === pageCount"
+          (click)="onPage(currentPage + 1)"
+        >
+          <i class="material-icons">arrow_forward_ios</i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template
+  #itemsTemplate
+  let-isMultipleSelectionActive="isMultipleSelectionActive"
+  let-itemsStatuses="itemsStatuses"
+>
+  <div class="position-relative" *ngFor="let galleryItem of galleryItems$ | async">
+    <app-gallery-view-item
+      [galleryItem]="galleryItem"
+      [status]="itemsStatuses[galleryItem.name]"
+      (onMultipleAnnotate)="annotateSelectedItems($event)"
+      (onDeleteAnnotation)="
+        deleteAnnotation(galleryItem.name, itemsStatuses[galleryItem.name][annotationKey])
+      "
+    >
+    </app-gallery-view-item>
+    <div *ngIf="isMultipleSelectionActive" class="position-absolute bottom-0 start-0">
+      <app-checkbox
+        (changed)="gallerySelectionService.onItemsSelectionChange($event, galleryItem)"
+      ></app-checkbox>
+    </div>
+  </div>
+</ng-template>

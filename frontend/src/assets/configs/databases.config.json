@@ -1,0 +1,71 @@
+{
+  "influx": {
+    "name": {
+      "type": "string",
+      "default": "Influx DB",
+      "validators": ["required"]
+    },
+    "url": {
+      "type": "string",
+      "default": "http://",
+      "validators": ["required", "url"]
+    },
+    "bucket": {
+      "type": "string",
+      "default": "Bucket",
+      "validators": ["required"]
+    },
+    "token": {
+      "type": "string",
+      "default": "Token",
+      "validators": ["required"],
+      "inputType": "password"
+    },
+    "org": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "timescale": {
+    "name": {
+      "type": "string",
+      "default": "Timescale DB",
+      "validators": ["required"]
+    },
+    "host": {
+      "type": "string",
+      "validators": ["required"]
+    },
+    "port": {
+      "type": "string",
+      "default": "5432",
+      "validators": ["required"]
+    },
+    "database": {
+      "type": "string",
+      "default": "postgres",
+      "validators": ["required"]
+    },
+    "username": {
+      "type": "string",
+      "validators": ["required"]
+    },
+    "password": {
+      "type": "string",
+      "validators": ["required"],
+      "inputType": "password"
+    },
+    "schema": {
+      "type": "string",
+      "default": "public",
+      "validators": ["required"]
+    },
+    "schemaType": {
+      "type": "string",
+      "formFieldType": "select",
+      "list": ["wide", "narrow"],
+      "default": "wide",
+      "validators": ["required"]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+<div
+  class="steps-wrapper position-relative w-100 d-flex align-items-center justify-content-between"
+>
+  <div class="step w-100" [ngClass]="curr <= step ? 'active' : ''" *ngFor="let curr of steps">
+    <div
+      role="button"
+      (click)="setStep(curr)"
+      class="step-title text-white fw-bold rounded-circle d-flex align-items-center justify-content-center ms-auto"
+    >
+      {{ curr }}
+    </div>
+  </div>
+</div>

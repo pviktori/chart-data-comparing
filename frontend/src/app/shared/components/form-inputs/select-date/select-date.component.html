@@ -1,0 +1,109 @@
+<div class="input-group w-100">
+  <label class="fw-bold">
+    <ng-content></ng-content>
+  </label>
+
+  <div class="position-relative w-100 border rounded-pill p-1">
+    <ng-container *transloco="let t">
+      <input
+        class="border-0"
+        ngbDatepicker
+        #dp
+        (dateSelect)="onDateSelection($event)"
+        [displayMonths]="1"
+        [dayTemplate]="day"
+        [footerTemplate]="footerTemplate"
+        [ngClass]="[
+          'date-picker',
+          'form-control',
+          'pe-5',
+          'w-100',
+          mode,
+          control.disabled ? 'disabled' : ''
+        ]"
+        #datepicker="ngbDatepicker"
+        [autoClose]="'outside'"
+        (closed)="closed()"
+        [startDate]="{ year: toDateControl.value?.year, month: toDateControl.value?.month }"
+        [placeholder]="t('common.form.no_date_selected')"
+        [value]="
+          control.value
+            ? (control.value.from | date: 'dd.MM.YYYY | HH:mm') +
+              ' - ' +
+              (control.value.to | date: 'dd.MM.YYYY | HH:mm')
+            : null
+        "
+        (keydown)="$event.preventDefault()"
+        (click)="!control.disabled && triggerCalendar()"
+      />
+      <div
+        class="position-absolute date-picker-icon"
+        role="button"
+        [ngClass]="{
+          disabled: control.disabled
+        }"
+      >
+        <i class="material-icons me-2 icon-size" (click)="!control.disabled && triggerCalendar()">
+          date_range
+        </i>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #day let-date let-focused="focused" let-currentMonth="currentMonth">
+  <div
+    class="custom-day p-0"
+    [class.faded]="isInside(date)"
+    [class.outside-date]="currentMonth !== date.month"
+    [class.start]="isStartDate(date) || (hoveredDate && isStartDate(hoveredDate))"
+    [class.end]="isEndDate(date)"
+    (mouseenter)="hoveredDate = date"
+    (mouseleave)="hoveredDate = null"
+  >
+    <span
+      [class.range]="isRange(date)"
+      class="w-100 h-100 d-flex align-items-center justify-content-center rounded-circle"
+    >
+      {{ date.day }}
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #footerTemplate>
+  <ng-container *transloco="let t">
+    <form [formGroup]="dateForm" class="mb-2">
+      <div class="d-flex align-items-center justify-content-between px-3">
+        <b>{{ t('common.form.time_from') }}</b>
+        <ngb-timepicker
+          [meridian]="true"
+          [formControlName]="'startTime'"
+          [seconds]="true"
+          [class.tp-error]="dateForm.get('startTime')?.invalid"
+        ></ngb-timepicker>
+      </div>
+      <div class="d-flex align-items-center justify-content-between px-3 mt-2">
+        <b>{{ t('common.form.time_to') }}</b>
+        <ngb-timepicker
+          [meridian]="true"
+          [formControlName]="'endTime'"
+          [seconds]="true"
+          [class.tp-error]="dateForm.get('endTime')?.invalid"
+        ></ngb-timepicker>
+      </div>
+      <div class="d-flex align-items-center justify-content-end pt-3 px-3">
+        <button type="button" class="btn" (click)="clear()">
+          {{ 'common.clear' | transloco }}
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="save()"
+          [disabled]="!fromDateControl.value || !toDateControl.value"
+        >
+          {{ 'common.save' | transloco }}
+        </button>
+      </div>
+    </form>
+  </ng-container>
+</ng-template>

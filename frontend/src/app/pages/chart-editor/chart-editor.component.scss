@@ -1,0 +1,151 @@
+.chart-editor-sidebar {
+  background-color: #e2e2e3;
+}
+
+.header-color {
+  background-color: #e2e2e3;
+}
+
+.chart-editor-sidebar-width {
+  width: 370px;
+}
+
+.spinner-wrapper {
+  top: 0;
+  left: 0;
+  color: #8f949b;
+  z-index: 9;
+}
+
+ul.tabs {
+  list-style-type: none;
+
+  li {
+    &.tab {
+      width: 235px;
+    }
+
+    .close-tab-icon {
+      right: 10px;
+      top: 5px;
+    }
+  }
+}
+
+.content-wrapper {
+  background-color: #e2e2e3;
+
+  &.chart-wrapper {
+    flex: 1;
+  }
+}
+
+.tab-content-wrapper {
+  background-color: #efefef;
+
+  &.no-data {
+    background-image: url('../../../assets/images/no-data.png');
+    background-origin: border-box;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 130px;
+  }
+}
+
+.rounded-border-card {
+  height: 70px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+
+  &.faded {
+    overflow: hidden;
+    opacity: 0;
+    height: 0;
+    padding: 0 !important;
+    pointer-events: none;
+    transition: height 0s ease, padding 0s ease, opacity 1s ease;
+    transition-delay: 1s, 1s, 0s;
+  }
+}
+
+.swipe-area {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.pointer {
+  position: absolute;
+  font-size: 48px;
+  left: 2px;
+  animation: rotateFinger 3s infinite;
+  transform-origin: bottom center;
+}
+
+.arrow {
+  position: absolute;
+  font-size: 18px;
+  animation: movingArrows 3s infinite;
+}
+
+@keyframes rotateFinger {
+  0% {
+    transform: rotate(0deg) scale(1.2);
+  }
+
+  15% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  35% {
+    transform: rotate(-20deg) scale(1);
+  }
+
+  65% {
+    transform: rotate(20deg) scale(1);
+  }
+
+  85% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  100% {
+    transform: rotate(0deg) scale(1.2);
+  }
+}
+
+@keyframes movingArrows {
+  0% {
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+    transform: translate(0);
+  }
+
+  35% {
+    opacity: 1;
+    transform: translate(-10px, 0);
+  }
+
+  65% {
+    opacity: 1;
+    transform: translate(10px, 0);
+  }
+
+  85% {
+    opacity: 1;
+    transform: translate(0);
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.select-timestamp-background {
+  z-index: 1;
+}

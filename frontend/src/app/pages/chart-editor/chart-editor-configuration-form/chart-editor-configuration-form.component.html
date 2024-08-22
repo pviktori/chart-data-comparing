@@ -1,0 +1,252 @@
+<div class="position-absolute top-0 bottom-0 w-100 d-flex flex-column">
+  <div class="d-flex flex-column h-100">
+    <div class="d-flex justify-content-between px-3 pt-3">
+      <ng-container
+        *ngFor="let step of steps"
+        [ngTemplateOutlet]="stepTmpl"
+        [ngTemplateOutletContext]="{
+          name: step.name,
+          number: step.value
+        }"
+      ></ng-container>
+    </div>
+    <div class="bg-primary bg-opacity-15 pt-1 mx-3"></div>
+    <div class="flex-fill overflow-auto">
+      <form
+        class="bg-white p-4 d-flex flex-column gap-4"
+        [formGroup]="dataSetupGroup"
+        *ngIf="stepControl.value === 0"
+      >
+        <div ngbDropdown class="input-group w-100">
+          <label class="fw-bold"> {{ 'settings.data_source' | transloco }}*</label>
+          <div ngbDropdownToggle class="dropdown-form-input form-select w-100 ps-3">
+            <div
+              class="d-flex align-items-center position-relative"
+              *ngIf="dataSetupGroup.get('dataSourceId')?.value"
+            >
+              <img
+                class="ds-icon position-absolute"
+                [src]="'./assets/images/' + selectedDataSource.type + '-icon.png'"
+              />
+              <span class="ds-title">{{ selectedDataSource.name }}</span>
+            </div>
+            <div *ngIf="!dataSetupGroup.get('dataSourceId')?.value">No database</div>
+          </div>
+          <div ngbDropdownMenu>
+            <div
+              class="d-flex align-items-center"
+              (click)="dataSetupGroup.get('dataSourceId')?.setValue(ds.id)"
+              ngbDropdownItem
+              role="button"
+              *ngFor="let ds of dataSources"
+            >
+              <div class="p-2 position-relative">
+                <img
+                  class="ds-icon position-absolute"
+                  [src]="'./assets/images/' + ds.type + '-icon.png'"
+                />
+                <span class="ds-title"> {{ ds.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <app-select
+          [loading]="dataSetLoading"
+          [formControlName]="'datasetId'"
+          [list]="dataSets"
+          mode="outline"
+          [disabled]="true"
+        >
+          {{ 'chart_editor.data_set' | transloco }}*
+        </app-select>
+        <app-select-date [formControlName]="'timeFrame'"></app-select-date>
+      </form>
+      <form
+        class="bg-white p-4 d-flex flex-column gap-4"
+        [formGroup]="filtersGroup"
+        *ngIf="stepControl.value === 1"
+      >
+        <div class="input-group" *ngIf="!filtersGroup.get('filters')?.value.length">
+          <label class="fw-bold">Custom filter</label>
+          <button class="btn btn-outline-primary w-100" type="submit" (click)="addFilter()">
+            <span>{{ 'chart_editor.add_new_filter' | transloco }}</span>
+          </button>
+        </div>
+        <ng-container *ngIf="filtersGroup.get('filters')?.value.length" formArrayName="filters">
+          <div
+            class="input-group flex-column"
+            *ngFor="let item of filtersFormArray.controls; let i = index"
+          >
+            <span class="reset-model-settings" (click)="removeFilter(i)">
+              {{ 'common.remove' | transloco }}
+            </span>
+            <label class="fw-bold">Filter {{ i + 1 }}</label>
+            <div class="d-flex flex-column gap-2" [formGroup]="$any(item)">
+              <app-select
+                [formControlName]="'feature'"
+                [list]="features"
+                mode="outline"
+                [placeholder]="'chart_editor.feature' | transloco"
+              >
+              </app-select>
+              <app-select
+                [formControlName]="'operator'"
+                [list]="operators"
+                mode="outline"
+                [placeholder]="'chart_editor.operator' | transloco"
+              >
+              </app-select>
+              <app-input
+                mode="outline"
+                [formControlName]="'value'"
+                [type]="getFilterGroupValueType(i)"
+                [placeholder]="'chart_editor.value' | transloco"
+              >
+              </app-input>
+            </div>
+          </div>
+        </ng-container>
+        <div
+          class="d-flex justify-content-center"
+          *ngIf="filtersGroup.get('filters')?.value.length"
+        >
+          <button
+            class="btn btn-outline-primary p-2 d-flex justify-content-center align-items-center"
+            type="submit"
+            (click)="addFilter()"
+          >
+            <i class="material-icons">add</i>
+          </button>
+        </div>
+        <app-multi-select [formControlName]="'features'" [list]="features">
+          {{ 'chart_editor.features' | transloco }}*
+        </app-multi-select>
+      </form>
+      <form
+        class="bg-white p-4 d-flex flex-column gap-4 h-100"
+        [formGroup]="dataSetupGroup"
+        *ngIf="stepControl.value === 2"
+      >
+        <ng-container
+          *ngIf="viewMode === 'periodic'"
+          [ngTemplateOutlet]="periodicAnnotationsTmpl"
+          [ngTemplateOutletContext]="{
+            counts: periodicAnnotationsCount$ | async
+          }"
+        ></ng-container>
+        <div class="d-flex align-items-end gap-2 mb-2">
+          <button
+            class="btn w-100"
+            [ngClass]="{
+              'btn-primary': !activateDateRange.value,
+              'btn-outline-primary': activateDateRange.value
+            }"
+            type="submit"
+            (click)="activateSelectChartPeriod(!activateDateRange.value)"
+          >
+            <span>{{
+              activateDateRange.value ? 'Deactivate' : 'Activate sequences choosing in chart'
+            }}</span>
+          </button>
+        </div>
+        <ul class="list-group mb-2 px-1">
+          <li
+            *ngFor="let seq of sequences; let i = index"
+            [ngClass]="{
+              'old-value': seq.mode === 'extra'
+            }"
+            class="list-group-item d-flex justify-content-between align-items-center position-relative"
+          >
+            {{ seq.start | date: 'dd.MM.YYYY | HH:mm' }} -
+            {{ seq.stop | date: 'dd.MM.YYYY | HH:mm' }}
+            <i (click)="removeDateRange(i)" class="material-icons small-icon" type="button">
+              close
+            </i>
+          </li>
+        </ul>
+      </form>
+    </div>
+    <div class="py-4 px-3 w-100">
+      <button
+        *ngIf="stepControl.value < 2"
+        class="btn btn-primary w-100"
+        type="submit"
+        (click)="nextStep()"
+        [disabled]="!isStepValid"
+      >
+        <span>{{ 'chart_editor.next_step' | transloco }}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #stepTmpl let-name="name" let-number="number">
+  <div
+    class="d-flex gap-2 rounded-top px-2 py-1"
+    (click)="goToStep(number)"
+    [class.fw-bold]="number == stepControl.value"
+    [class.text-dark]="number == stepControl.value"
+    [ngClass]="{
+      'fw-bold': number == stepControl.value,
+      'text-dark': number == stepControl.value,
+      'bg-primary': number == stepControl.value,
+      'bg-opacity-15': number == stepControl.value
+    }"
+    role="button"
+  >
+    {{ name }}
+    <div
+      *ngIf="number >= stepControl.value"
+      class="badge rounded-pill"
+      [class.fw-bold]="number == stepControl.value"
+      [class.text-dark]="number == stepControl.value"
+      [class.text-muted]="number !== stepControl.value"
+    >
+      {{ number + 1 }}
+    </div>
+    <div *ngIf="number < stepControl.value">
+      <i
+        class="badge rounded-pill edit-icon material-icons text-muted d-flex align-items-center justify-content-center"
+      >
+        edit
+      </i>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #periodicAnnotationsTmpl let-counts="counts">
+  <div class="mb-2">
+    <label><strong>Annotations</strong></label>
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex gap-2 align-items-center">
+        <div class="rounded-circle annotation-circle bg-success"></div>
+        OK Sequences - <strong>{{ periodicAnnotationsCountNoDefect }}</strong>
+      </div>
+      <button
+        class="btn btn-transparent btn-icon"
+        (click)="removeAnnotations(annotationEnum.NO_DEFECT)"
+      >
+        <i class="material-icons mi-24">delete_outline</i>
+      </button>
+    </div>
+    <ul class="list-group"></ul>
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex gap-2 align-items-center">
+        <div class="rounded-circle annotation-circle bg-danger"></div>
+        NOK Sequences - <strong>{{ periodicAnnotationsCountDefect }}</strong>
+      </div>
+      <button
+        class="btn btn-transparent btn-icon text-right"
+        (click)="removeAnnotations(annotationEnum.DEFECT)"
+      >
+        <i class="material-icons mi-24">delete_outline</i>
+      </button>
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let item of counts.defect | keyvalue">
+        {{ annotationCategories[$any(item).key].displayName }} - {{ $any(item).value }}
+      </li>
+    </ul>
+  </div>
+</ng-template>

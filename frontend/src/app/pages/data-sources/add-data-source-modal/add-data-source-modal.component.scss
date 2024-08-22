@@ -1,0 +1,23 @@
+.ds-icon {
+  width: 46px;
+  height: 46px;
+}
+
+.modal-body {
+  padding: 0;
+}
+
+.list-group-item:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.ds-type {
+  .ds-icon {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.modal-header{
+  font-size: 18px;
+}

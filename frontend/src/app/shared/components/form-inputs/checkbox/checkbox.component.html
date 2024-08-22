@@ -1,0 +1,22 @@
+<div
+  class="form-check form-check-inline d-flex gap-2 w-100 align-items-center"
+  [ngClass]="{
+    'flex-row': labelPosition === 'left',
+    'flex-row-reverse': labelPosition === 'right',
+    'ps-0': labelPosition === 'right'
+  }"
+>
+  <input
+    class="form-check-input"
+    type="checkbox"
+    role="button"
+    [formControl]="control"
+    [ngClass]="{
+      'ms-0': labelPosition === 'right'
+    }"
+  />
+
+  <label class="form-check-label">
+    <ng-content></ng-content>
+  </label>
+</div>

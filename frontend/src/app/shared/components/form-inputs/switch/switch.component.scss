@@ -1,0 +1,30 @@
+@import '../../../../../assets/styles/_variables';
+
+.form-control {
+  background: #e2e2e3;
+  border: 1px solid #e2e2e3;
+  &.selected-boolean{
+    background: $primary-color;
+  }
+
+  &.boolean{
+    width: 55px;
+    flex: inherit;
+  }
+}
+
+.switch-item {
+  border-radius: 20px;
+  flex: 1 1 0;
+  white-space: nowrap;
+  transition: 0.2s;
+
+  &.selected {
+    color: $primary-color;
+    font-weight: bold;
+  }
+
+  &.selected-boolean{
+    color: $primary-color;
+  }
+}

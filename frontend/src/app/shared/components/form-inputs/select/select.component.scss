@@ -1,0 +1,31 @@
+select.form-select {
+  padding-left: 20px;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: #f0f0f1;
+  border-color: #f0f0f1;
+
+  &.error {
+    background-color: #fbe2e2;
+    border-color: #fbe2e2;
+  }
+
+  &.outline {
+    border-color: #5d666f;
+    background-color: transparent;
+  }
+
+  &.light {
+    background-color: #fff;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: .5;
+  }
+}
+
+.loading-placement {
+  right: 5px;
+  top: 5px;
+}

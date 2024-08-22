@@ -1,0 +1,33 @@
+<div class="d-flex h-100 flex-column p-3">
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs border-0">
+    <li class="p-3 pe-5 border-0">
+      <h5>
+        <b>{{ 'sidebar.settings' | transloco }}</b>
+      </h5>
+    </li>
+    <li [ngbNavItem]="1">
+      <a ngbNavLink class="border-0 text-dark h-100 d-flex align-items-center px-4">{{
+        'settings.general' | transloco
+      }}</a>
+      <ng-template ngbNavContent>
+        <form [formGroup]="settingsFormGroup">
+          <div class="border-bottom p-3" *ngFor="let setting of settings$ | async">
+            <div class="w-100 input-wrapper">
+              <app-input
+                [useDebounce]="true"
+                [formControlName]="setting.id"
+                (changed)="updateSetting(setting.id)"
+              >
+                {{ setting.label }}
+              </app-input>
+              <div class="text-muted pt-2">
+                {{ setting.description }}
+              </div>
+            </div>
+          </div>
+        </form>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="nav" class="bg-white py-3 rounded-border-card h-100"></div>
+</div>

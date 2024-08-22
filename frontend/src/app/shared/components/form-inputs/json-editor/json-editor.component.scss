@@ -1,0 +1,20 @@
+::ng-deep {
+  .json-editor-wrapper {
+    .json-editor-input {
+      background-color: #f0f0f1;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .jsoneditor.jsoneditor-mode-code {
+      border: none;
+      height: 300px;
+      .ace_gutter {
+        display: none;
+      }
+      .ace_scroller {
+        left: 0 !important;
+        background-color: #f0f0f1;
+      }
+    }
+  }
+}

@@ -1,0 +1,82 @@
+<ng-container
+  [ngTemplateOutlet]="layoutTmpl"
+  [ngTemplateOutletContext]="{
+    isSelectedItem: isSelectedItem$ | async,
+    isInSelectedItems: isInSelectedItems$ | async
+  }"
+></ng-container>
+
+<ng-template #recursiveList let-annotations="annotations" let-isDefect="isDefect" let-menu="menu">
+  <div *ngFor="let node of annotations | keyvalue" class="dropdown-item p-0">
+    <ng-container *ngIf="!hasChildren($any(node.value).sub_categories)">
+      <button
+        ngbDropdownItem
+        class="px-2 py-1"
+        (click)="
+          addAnnotation($any(node).key, $any(node).value.display_name, isDefect); menu.close()
+        "
+      >
+        {{ $any(node.value).display_name }}
+      </button>
+    </ng-container>
+    <ng-container *ngIf="hasChildren($any(node.value).sub_categories)">
+      <div ngbDropdown [autoClose]="false" [placement]="['right-top', 'left-top']">
+        <div ngbDropdownToggle class="d-flex align-items-center justify-content-between px-2 py-1">
+          {{ $any(node.value).display_name }}
+          <span>></span>
+        </div>
+        <div ngbDropdownMenu class="p-0" *ngIf="$any(node.value).sub_categories">
+          <ng-template
+            [ngTemplateOutlet]="recursiveList"
+            [ngTemplateOutletContext]="{
+              annotations: $any(node.value).sub_categories,
+              isDefect: isDefect === undefined ? node.key === 'defect' : isDefect,
+              menu
+            }"
+          ></ng-template>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template
+  #layoutTmpl
+  let-isSelectedItem="isSelectedItem"
+  let-isInSelectedItems="isInSelectedItems"
+>
+  <div
+    class="rounded position-relative gallery-item p-1 w-100 h-100"
+    [class]="{
+      border: status !== null,
+      'border-2': status !== null,
+      'border-danger': defectSelected,
+      'border-success': noDefectSelected,
+      outlined: isSelectedItem,
+      'selected-to-annotate': isInSelectedItems
+    }"
+    (click)="gallerySelectionService.selectGalleryItem(galleryItem)"
+  >
+    <canvas #lineChart style="width: 100%; height: 100%" class="bg-white"> </canvas>
+    <div
+      ngbDropdown
+      class="position-absolute top-0 end-0 menu"
+      [autoClose]="'outside'"
+      #menu="ngbDropdown"
+      *ngIf="isSelectedItem"
+    >
+      <button class="btn btn-outline-dark border-0 p-1" ngbDropdownToggle>
+        <i class="material-icons">more_vert</i>
+      </button>
+      <div ngbDropdownMenu class="p-0 m-0">
+        <button *ngIf="status" ngbDropdownItem class="px-2 py-1" (click)="deleteAnnotation()">
+          {{ 'Remove label' | transloco }}
+        </button>
+        <ng-template
+          [ngTemplateOutlet]="recursiveList"
+          [ngTemplateOutletContext]="{ annotations: annotationsService.annotationTree, menu }"
+        ></ng-template>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,35 @@
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins';
+
+.form-control {
+  padding-left: 20px;
+  outline: none !important;
+  box-shadow: none !important;
+  background: #f0f0f1;
+  border-color: #f0f0f1;
+
+  .badge {
+    border-radius: 20px;
+    z-index: 99;
+    font-size: 12px;
+    background-color: $gray-800 !important;
+
+    .material-icons {
+      font-size: 12px;
+    }
+  }
+
+  &.disabled {
+    pointer-events: none;
+
+    .icon-size {
+      opacity: .5;
+    }
+  }
+}
+
+.dropdown-menu {
+  max-height: 200px;
+  overflow: auto;
+}

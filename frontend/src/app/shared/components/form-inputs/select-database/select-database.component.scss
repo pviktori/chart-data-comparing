@@ -1,0 +1,33 @@
+.ds-icon {
+  width: 26px;
+  height: 26px;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 10px;
+}
+
+.form-select {
+  padding-left: 20px;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: #f0f0f1;
+  border-color: #f0f0f1;
+
+  &.error {
+    background-color: #fbe2e2;
+    border-color: #fbe2e2;
+  }
+
+  &.outline {
+    border-color: #5d666f;
+    background-color: transparent;
+  }
+
+  &.light {
+    background-color: #fff;
+  }
+}
+
+.ds-title {
+  padding-left: 30px;
+}

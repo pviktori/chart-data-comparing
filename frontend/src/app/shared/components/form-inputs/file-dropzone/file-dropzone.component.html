@@ -1,0 +1,50 @@
+<div class="input-group w-100">
+  <label class="fw-bold">
+    <ng-content></ng-content>
+  </label>
+  <div class="w-100">
+    <div
+      *ngIf="!control.value"
+      role="button"
+      class="file-dropzone w-100 border border-primary bg-opacity-10 bg-primary border-3 p-4 d-flex justify-content-center flex-column rounded align-items-center gap-3"
+      [ngClass]="{
+        'drag-over': isDragging
+      }"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+      (click)="fileInput.click()"
+    >
+      <img class="file-dropzone-icon" [src]="'./assets/images/file-upload.png'" />
+      <div>
+        <strong>{{ 'settings.click_to_upload' | transloco }}</strong>
+        {{ 'settings.or_drag_and_drop' | transloco }}
+      </div>
+      <div class="text-muted">{{ 'settings.maximum_file_is_100_mb' | transloco }}</div>
+    </div>
+    <div *ngIf="control.value">
+      <div class="file-card d-flex align-items-center">
+        <div class="bg-white rounded p-2">
+          <img class="file-icon" [src]="'./assets/images/file.png'" />
+        </div>
+        <div class="d-flex flex-column flex-fill">
+          <strong>{{ control.value.name }}</strong>
+          <span class="text-muted">{{ control.value.size / 1_000_000 | number: '1.2-2' }} Mb</span>
+        </div>
+        <button
+          class="btn btn-transparent btn-icon d-flex justify-content-center align-items-center flex-column"
+          (click)="removeFile()"
+        >
+          <i class="material-icons mi-18">close</i>
+        </button>
+      </div>
+    </div>
+    <input
+      #fileInput
+      class="d-none"
+      type="file"
+      [accept]="acceptExtensions"
+      (change)="onFileSelected($any($event.target).files[0])"
+    />
+  </div>
+</div>

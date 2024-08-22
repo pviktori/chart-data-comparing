@@ -1,0 +1,12 @@
+.DS_Store
+.env
+**/debug.env
+Thumbs.db
+_local
+node_modules
+dist
+.vscode
+.angular
+/data
+**/__pycache__
+.gitlab-ci.yml

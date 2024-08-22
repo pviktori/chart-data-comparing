@@ -1,0 +1,142 @@
+<div class="w-100 h-100 d-flex flex-column">
+  <div class="d-flex header-color">
+    <div class="d-flex justify-content-between align-items-center p-4 chart-editor-sidebar-width">
+      <h5 class="fw-bold text-dark">{{ 'sidebar.charts' | transloco }}</h5>
+    </div>
+    <div class="position-relative flex-fill overflow-auto d-flex align-items-end">
+      <ng-container
+        [ngTemplateOutletContext]="{
+          tabs: (tabs$ | async) || [],
+          activeTab: activeTab$ | async
+        }"
+        [ngTemplateOutlet]="navigationTabsLayout"
+      ></ng-container>
+    </div>
+  </div>
+  <div class="d-flex flex-fill">
+    <div class="content-wrapper chart-editor-sidebar-width position-relative bg-white">
+      <app-chart-editor-configuration-form
+        #chartEditorConfigForm
+        [viewMode]="chartViewControl.value"
+        (formChanged)="updateChartData($event)"
+        (activateChartSelection)="activateSelectChartPeriod($event)"
+        (okSequencesChanged)="okSequencesChanged($event)"
+      ></app-chart-editor-configuration-form>
+    </div>
+    <div class="chart-wrapper h-100 content-wrapper" #parentWrapper>
+      <ng-container
+        [ngTemplateOutlet]="chartLayout"
+        [ngTemplateOutletContext]="{
+          loading: loading$ | async
+        }"
+      ></ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #navigationTabsLayout let-activeTab="activeTab" let-tabs="tabs">
+  <ul class="position-absolute d-flex w-100 m-0 p-0 align-items-end tabs">
+    <li
+      (click)="goToSession(tab.id)"
+      *ngFor="let tab of tabs"
+      [ngClass]="{
+        'bg-light-grey': activeTab?.id === tab.id,
+        'fw-bold': activeTab?.id === tab.id,
+        'pe-5': tabs.length > 1
+      }"
+      class="tab rounded-top py-2 px-3 position-relative d-flex align-items-center"
+      type="button"
+    >
+      <div class="text-truncate">
+        {{ 'chart_editor.new_tab' | transloco }}
+      </div>
+      <button
+        (click)="removeTab(tab.id)"
+        *ngIf="tabs.length > 1"
+        class="position-absolute close-tab-icon btn btn-transparent btn-icon p-1 d-flex align-items-center justify-content-center"
+      >
+        <i class="material-icons mi-18">close</i>
+      </button>
+    </li>
+    <li
+      (click)="createEmptySavedModel()"
+      class="border-bottom-0 p-2 rounded-circle bg-light-grey ms-2 d-flex align-items-center justify-content-center mb-1"
+      type="button"
+    >
+      <i class="material-icons mi-18">add</i>
+    </li>
+  </ul>
+</ng-template>
+
+<ng-template #chartLayout let-loading="loading">
+  <div
+    class="w-100 p-4 position-relative d-flex flex-column h-100 tab-content-wrapper"
+    [ngClass]="{ 'no-data': !loading && currentSession?.sessionLocal }"
+  >
+    <ng-container *ngIf="currentSession">
+      <div *ngIf="!currentSession?.sessionLocal" class="w-100 h-100">
+        <ng-container
+          *ngIf="viewModeControl.value === 'graph' && !loading"
+          [ngSwitch]="chartViewControl.value"
+        >
+          <app-chart-editor-line-chart
+            #lineChart
+            (newSeqEvent)="addOkSequenceByEvent($event)"
+            [sessionId]="currentSession.id"
+            [timestamps]="selectedTimestamps"
+            [inputData]="chartData"
+            [chartHtmlWrapper]="parentWrapper"
+            *ngSwitchCase="'time-series'"
+          >
+            <ng-container viewSwitch [ngTemplateOutlet]="viewSwitch"></ng-container>
+          </app-chart-editor-line-chart>
+          <app-chart-editor-periodic-view *ngSwitchCase="'periodic'">
+            <ng-container viewSwitch [ngTemplateOutlet]="viewSwitch"></ng-container>
+          </app-chart-editor-periodic-view>
+        </ng-container>
+      </div>
+    </ng-container>
+    <app-flexible-loading-layout
+      *ngIf="loading"
+      [message]="'chart_editor.getting_the_data_ready_for_you'"
+    ></app-flexible-loading-layout>
+    <!-- <div
+      *ngIf="loading"
+      class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center spinner-wrapper flex-column bg-opacity-50 bg-white"
+    >
+      <img src="assets/images/spinner.gif" class="spinner-size" />
+      {{ 'chart_editor.getting_the_data_ready_for_you' | transloco }}
+    </div> -->
+    <ng-container *ngIf="selectionChartPeriodActivated">
+      <div
+        class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center spinner-wrapper select-window bg-opacity-25 bg-black select-timestamp-background"
+      ></div>
+      <div
+        class="position-absolute bg-white p-3 rounded-border-card shadow d-flex align-items-center gap-3"
+        (mouseover)="disableChartSelectionTooltip()"
+        [ngClass]="{ faded: !showChartSelectionTooltip }"
+      >
+        <ng-container [ngTemplateOutlet]="selectAreaAnimation"></ng-container>
+        <span>{{ 'chart_editor.you_can_choose_the_date_range_on_the_graph' | transloco }}</span>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #viewSwitch>
+  <app-switch
+    [list]="[
+      { name: 'Time Series View', value: 'time-series' },
+      { name: 'Periodic View', value: 'periodic' }
+    ]"
+    [formControl]="chartViewControl"
+  ></app-switch>
+</ng-template>
+
+<ng-template #selectAreaAnimation>
+  <div class="swipe-area">
+    <i class="material-icons pointer">touch_app</i>
+    <i class="material-icons arrow" style="left: 0">keyboard_arrow_left</i>
+    <i class="material-icons arrow" style="right: 0">keyboard_arrow_right</i>
+  </div>
+</ng-template>

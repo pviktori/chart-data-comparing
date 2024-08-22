@@ -1,0 +1,57 @@
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins';
+
+.form-range {
+  height: 4.5rem;
+  &::-webkit-slider-thumb {
+    z-index: 99;
+    width: 24px;
+    height: 24px;
+    background-color: #0090d4;
+    margin-top: -8px;
+    outline: none !important;
+    border: none;
+    box-shadow: none;
+  }
+
+  &::-webkit-slider-runnable-track {
+    background-color: transparent;
+  }
+}
+
+.range-process {
+  background-color: #aedcf2;
+  height: $form-range-track-height;
+  border-top-left-radius: $form-range-track-border-radius;
+  border-bottom-left-radius: $form-range-track-border-radius;
+  top: 2rem;
+  z-index: -1;
+}
+
+.range-popup {
+  top: 0;
+  font-size: 14px;
+  background-color: #f0f0f1;
+  border-radius: 20px;
+  min-width: 24px;
+  text-align: center;
+}
+
+.range-track {
+  height: $form-range-track-height;
+  background-color: #f0f1f2;
+  top: 2rem;
+  z-index: -1;
+  border-radius: $form-range-track-border-radius;
+}
+
+label {
+  margin-bottom: 0;
+}
+
+.range-error {
+  bottom: 0;
+  color: #d80000;
+  font-size: 12px;
+}

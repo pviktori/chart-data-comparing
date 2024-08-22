@@ -1,0 +1,158 @@
+<div class="modal-header fw-bold border-0 px-4">
+  {{ (mode === 'edit' ? 'settings.edit_data_source' : 'settings.add_data_source') | transloco }}
+</div>
+<div class="modal-body">
+  <ng-container
+    *ngIf="(databases$ | async) === null || !step; else ready"
+    [ngTemplateOutlet]="loadingTemp"
+  ></ng-container>
+
+  <ng-template #ready>
+    <div *ngIf="mode === 'create' && step" class="mb-4 px-3">
+      <app-steps
+        (stepChanges)="step = $event"
+        [disableNext]="true"
+        [end]="2"
+        [start]="1"
+        [step]="step"
+      ></app-steps>
+    </div>
+
+    <ng-container *ngIf="step === 1" [ngTemplateOutlet]="step0"></ng-container>
+    <ng-container *ngIf="step === 2" [ngTemplateOutlet]="step1"></ng-container>
+  </ng-template>
+</div>
+
+<ng-template #step0>
+  <div [formGroup]="databasesFiltersForm" class="d-flex px-3 w-100 gap-3">
+    <app-search [formControlName]="'name'" [list]="databaseNames" class="w-100"> Name</app-search>
+    <app-multi-select [formControlName]="'category'" [list]="categories" class="w-100"
+      >Category
+    </app-multi-select>
+  </div>
+  <ng-container *ngFor="let databaseInfo of databases$ | async | keyvalue: keyValueOrig">
+    <ul *ngIf="isCategoryAllowed(databaseInfo.key)" class="list-group">
+      <div class="fw-bold my-3 ps-3">
+        {{ 'databases.' + databaseInfo.key | transloco }}
+      </div>
+      <li
+        (click)="chooseDatabase(database.type)"
+        *ngFor="
+          let database of databaseInfo.value || []
+            | filter
+              : {
+                  value: databasesFiltersForm?.value.name.value || databasesFiltersForm?.value.name,
+                  path: 'name'
+                }
+        "
+        class="list-group-item border-0 p-3 d-flex gap-3 align-items-center"
+        role="button"
+      >
+        <img [src]="'./assets/images/' + database.type + '-icon.png'" class="ds-icon" />
+        <div class="w-100">
+          <div class="fw-bold">
+            {{ database.name }}
+          </div>
+          <div>
+            {{ database.description }}
+          </div>
+        </div>
+
+        <div class="border rounded-pill border-dark px-3">Core</div>
+      </li>
+    </ul>
+  </ng-container>
+</ng-template>
+
+<ng-template #step1>
+  <form
+    (submit)="submit()"
+    *ngIf="dataSourceForm"
+    [formGroup]="dataSourceForm"
+    class="px-3 container-fluid"
+  >
+    <div class="row row-cols-2 px-2">
+      <div class="col mb-4">
+        <app-input [formControlName]="'name'">
+          {{ 'settings.data_source_entity.name' | transloco }} *
+        </app-input>
+      </div>
+      <div class="col ds-type mb-4">
+        <app-select-database
+          [formControlName]="'type'"
+          [title]="'settings.data_source_entity.type'"
+        ></app-select-database>
+      </div>
+
+      <ng-container *ngIf="dataSourceConfigs">
+        <ng-container *ngFor="let config of dataSourceConfigs | keyvalue">
+          <ng-container *ngIf="config.key !== 'name' && config.key !== 'type'">
+            <ng-container [ngSwitch]="config.value.formFieldType">
+              <ng-container *ngSwitchCase="'select'">
+                <div class="col mb-4">
+                  <app-select
+                    [translate]="true"
+                    [formControlName]="config.key"
+                    [list]="
+                      config.value.list || []
+                        | toListItems: { translatePreName: 'settings.data_source_entity.' }
+                    "
+                    mode="outline"
+                  >
+                    {{ 'settings.data_source_entity.' + config.key | transloco }}
+                    {{ config.value.validators?.includes('required') ? '*' : '' }}
+                  </app-select>
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                <div class="col mb-4">
+                  <app-input
+                    [formControlName]="config.key"
+                    [type]="config.value.inputType || 'text'"
+                  >
+                    {{ 'settings.data_source_entity.' + config.key | transloco }}
+                    {{ config.value.validators?.includes('required') ? '*' : '' }}
+                  </app-input>
+                </div>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="d-flex align-items-center gap-3 mt-4 pb-4 px-2">
+      <button (click)="setStep(1)" *ngIf="!dataSourceId" class="btn btn-outline-dark px-4">
+        {{ 'common.back' | transloco }}
+      </button>
+      <button
+        (click)="testConnection()"
+        [disabled]="!allowedToTest"
+        class="btn btn-outline-primary px-4 ms-auto position-relative"
+        type="button"
+      >
+        <span
+          [ngClass]="{
+            invisible: (loading$ | async) === true
+          }"
+        >
+          {{ 'settings.test_connection' | transloco }}
+        </span>
+        <div
+          *ngIf="loading$ | async"
+          class="position-absolute absolute-center p-1 d-flex align-items-center justify-content-center"
+        >
+          <div class="spinner-border small-color-circle" role="status"></div>
+        </div>
+      </button>
+      <button [disabled]="!testPassed" class="btn btn-primary px-4" type="submit">
+        {{ (step === 2 ? 'common.form.save_changes' : 'settings.add_data_source') | transloco }}
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #loadingTemp>
+  <div class="p-3 d-flex align-items-center justify-content-center">
+    <div class="spinner-border" role="status"></div>
+  </div>
+</ng-template>

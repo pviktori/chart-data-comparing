@@ -1,0 +1,29 @@
+<div
+  class="input-group w-100"
+  [ngClass]="{
+    'flex-row': labelPosition === 'start',
+    'gap-2': labelPosition === 'start',
+    'flex-nowrap': labelPosition === 'start',
+    'align-items-center': labelPosition === 'start'
+  }"
+>
+  <label
+    class="fw-bold"
+    [ngClass]="{
+      'm-0': labelPosition === 'start'
+    }"
+  >
+    <ng-content></ng-content>
+  </label>
+  <input
+    [max]="max"
+    [min]="min"
+    [type]="type"
+    [step]="step"
+    class="form-control w-100 py-2"
+    [formControl]="control"
+    [ngClass]="{ error: !controlValid, disabled: control.disabled, mode }"
+    [placeholder]="placeholder"
+    (change)="onChange()"
+  />
+</div>

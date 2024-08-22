@@ -1,0 +1,81 @@
+<div class="input-group w-100">
+  <label class="fw-bold">
+    <ng-content></ng-content>
+  </label>
+  <div ngbDropdown class="w-100">
+    <div
+      role="button"
+      type="button"
+      class="form-control d-flex align-items-center position-relative ps-2 py-1"
+      ngbDropdownToggle
+      [ngClass]="{ disabled: control.disabled, 'pe-none': loading }"
+    >
+      <div class="w-100 d-flex flex-wrap pb-1">
+        <ng-container *transloco="let t">
+          <span
+            class="ps-3 pt-1 text-muted"
+            *ngIf="!control.value || !control.value.length || !selectedItems.length"
+          >
+            {{ t('common.form.search') }}
+          </span>
+        </ng-container>
+        <span *ngFor="let item of selectedItems" class="badge text-bg-dark me-1 mt-1 text-truncate">
+          {{ item.name }}
+          <span role="button" (click)="$event.stopPropagation(); removeItem(item)">
+            <i class="material-icons">close</i>
+          </span>
+        </span>
+      </div>
+      <i
+        class="material-icons me-2 icon-size"
+        [ngClass]="{
+          invisible: loading,
+          'position-absolute': loading
+        }"
+        role="button"
+      >
+        search
+      </i>
+      <div *ngIf="loading" class="d-flex align-items-center justify-content-center">
+        <div class="spinner-border small-color-circle" role="status"></div>
+      </div>
+    </div>
+    <ng-container *transloco="let t">
+      <div ngbDropdownMenu class="w-100 py-2 dropdown-menu">
+        <ng-container *ngIf="itemsList.length">
+          <div class="mb-2 px-2">
+            <input
+              type="text"
+              class="form-control"
+              [formControl]="searchControl"
+              placeholder="{{ t('common.filter') }}"
+            />
+          </div>
+
+          <button
+            (click)="addAllItems()"
+            ngbDropdownItem
+            role="button"
+            *ngIf="allowAll && !searchControl.value"
+            class="fw-bold"
+          >
+            All
+          </button>
+
+          <button
+            *ngFor="
+              let item of itemsList
+                | filter: { value: searchControl.value, path: ['name', 'value'] }
+            "
+            (click)="addItem(item)"
+            [class.disabled]="isItemChosen(item)"
+            ngbDropdownItem
+            role="button"
+          >
+            {{ item.name }}
+          </button>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</div>

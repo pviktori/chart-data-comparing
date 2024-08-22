@@ -1,0 +1,14 @@
+<div class="w-100 bg-white py-2 rounded-border-card h-100 overflow-hidden d-flex flex-column gap-3">
+  <div #chartParent class="flex-fill p-2 pt-0 position-relative">
+    <app-line-chart
+      #lineChart
+      (addTimestamp)="newSeqEvent.emit($event)"
+      (chartReady)="chartReady()"
+      (zoomHandler)="zoomHandler($event)"
+      [inputData]="chartData"
+      [scales]="scales"
+      [stealthMode]="stealthMode"
+      [chartHtmlWrapper]="chartParent"
+    ></app-line-chart>
+  </div>
+</div>

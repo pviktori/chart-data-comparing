@@ -1,0 +1,78 @@
+<div class="modal-header fw-bold border-0 p-4 justify-content-center">
+  {{ 'common.file_upload' | transloco }}
+</div>
+<div class="modal-body position-relative">
+  <form [formGroup]="dsFileUploadGroup">
+    <app-data-source-select formControlName="dataSource"></app-data-source-select>
+    <app-file-dropzone formControlName="file" [acceptExtensions]="['text/csv']"
+      >File</app-file-dropzone
+    >
+    <div class="d-flex align-items-center gap-3 mt-4 px-2 w-100">
+      <button class="btn btn-outline-dark w-100" (click)="dismiss()">
+        {{ 'common.back' | transloco }}
+      </button>
+      <button
+        class="btn btn-primary position-relative w-100"
+        type="button"
+        [disabled]="dsFileUploadGroup.invalid"
+        (click)="submit()"
+      >
+        {{ 'settings.start_ingestion' | transloco }}
+      </button>
+    </div>
+  </form>
+  <div
+    *ngIf="isProcessing"
+    class="bg-white position-absolute w-100 h-100 d-flex align-items-center justify-content-center flex-column process-overlay"
+  >
+    <ng-container *ngIf="!isLoading">
+      <div *ngIf="isUploaded" class="d-flex flex-column align-items-center justify-content-center">
+        <p>
+          <img src="assets/images/status-ok.png" class="spinner-size" />
+        </p>
+        <p class="process-message">
+          <strong> {{ 'common.success' | transloco }}! </strong>
+        </p>
+        <span class="process-description text-muted text-center">
+          <strong>{{
+            (samplesCount > 1
+              ? 'settings.many_samples_uploaded'
+              : 'settings.one_sample_was_loaded'
+            ) | transloco: { value: samplesCount }
+          }}</strong>
+        </span>
+      </div>
+      <div *ngIf="!isUploaded" class="d-flex flex-column align-items-center justify-content-center">
+        <p>
+          <img src="assets/images/status-error.png" class="spinner-size" />
+        </p>
+        <p class="process-message">
+          <strong>
+            {{ 'common.something_went_wrong' | transloco }}
+          </strong>
+        </p>
+        <span class="process-description text-muted text-center">
+          ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+        </span>
+        <button type="button" class="btn btn-link" (click)="resetFormGroup()">
+          {{ 'common.try_again' }}
+        </button>
+      </div>
+    </ng-container>
+
+    <div *ngIf="isLoading" class="d-flex flex-column align-items-center justify-content-center">
+      <p>
+        <img src="assets/images/spinner.gif" class="spinner-size" />
+      </p>
+      <p class="process-message">
+        <strong>
+          {{ 'settings.this_may_take_some_time' | transloco }}
+        </strong>
+      </p>
+      <span class="process-description text-muted text-center">
+        ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+      </span>
+    </div>
+  </div>
+</div>
+

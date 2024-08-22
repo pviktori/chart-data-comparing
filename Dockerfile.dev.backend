@@ -1,0 +1,24 @@
+FROM node:16-buster
+
+RUN mkdir /app \
+  && chown -R node:node /app \
+  && apt-get update \
+  && apt-get install -y nano bash-completion \
+  && npm completion > /etc/bash_completion.d/npm
+
+# ENV NPM_VERSION=6
+# ENV NESTJS_VERSION=8
+
+RUN npm install -g "npm@^6" \
+  && npm install -g "@nestjs/cli@^8"
+
+RUN npm i webpack
+
+COPY backend /app/
+
+WORKDIR /app
+
+RUN rm -rf ./dist
+
+RUN npm install
+CMD npm run dev

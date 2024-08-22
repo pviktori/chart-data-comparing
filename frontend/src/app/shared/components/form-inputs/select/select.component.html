@@ -1,0 +1,28 @@
+<div class="input-group w-100">
+  <label class="fw-bold">
+    <ng-content></ng-content>
+  </label>
+  <ng-container *transloco="let t">
+    <select
+      class="form-select w-100"
+      aria-label="Default select example"
+      [formControl]="control"
+      [ngClass]="{
+        error: !controlValid,
+        disabled: control.disabled,
+        'pe-none': loading
+      }"
+      [class.text-muted]="!control.value"
+    >
+      <option [disabled]="!deselectOption" [ngValue]="null">
+        {{ (translate ? t(placeholder) : placeholder) || t('common.form.choose') }}
+      </option>
+      <option *ngFor="let item of itemsList" [value]="item.value" class="text-dark">
+        {{ translate ? (item.name | transloco) : item.name }}
+      </option>
+    </select>
+  </ng-container>
+  <div *ngIf="loading" class="loading-placement position-absolute d-flex align-items-center justify-content-center">
+    <div class="spinner-border small-color-circle" role="status"></div>
+  </div>
+</div>

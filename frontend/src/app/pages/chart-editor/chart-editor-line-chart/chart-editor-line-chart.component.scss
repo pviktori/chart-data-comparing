@@ -1,0 +1,40 @@
+.features-dropdown-menu {
+    max-height: 200px;
+    overflow: auto;
+}
+
+.all-features {
+    border-radius: 5px !important;
+}
+
+.chart-wrapper {
+    z-index: 2;
+    background-color: #fff;
+}
+
+::ng-deep {
+    .custom-tooltip {
+        .tooltip-inner {
+            background-color: #ffffff;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            padding: 15px;
+            max-width: 400px;
+        }
+    }
+
+    .custom-tooltip.bs-tooltip-end .tooltip-arrow::before {
+        border-right-color: #ffffff;
+    }
+
+    .custom-tooltip.bs-tooltip-start .tooltip-arrow::before {
+        border-left-color: #ffffff;
+    }
+
+    .custom-tooltip.bs-tooltip-top .tooltip-arrow::before {
+        border-top-color: #ffffff;
+    }
+
+    .custom-tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+        border-bottom-color: #ffffff;
+    }
+}

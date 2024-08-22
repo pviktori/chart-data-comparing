@@ -1,0 +1,16 @@
+{
+  "name": "chart-data-comparing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "shell:dev": "docker compose -f docker-compose.dev.shell.yml up --build",
+    "postinstall": "concurrently  -n frontend,backend -c green,blue \"cd frontend && npm i\" \"cd backend && npm i\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.0.1",
+    "prettier": "^3.3.3"
+  }
+}

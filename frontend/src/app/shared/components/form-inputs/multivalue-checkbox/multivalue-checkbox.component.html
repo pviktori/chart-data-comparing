@@ -1,0 +1,19 @@
+<div
+  (click)="nextValue()"
+  class="multivalue-checkbox d-flex align-items-center gap-2"
+  type="button"
+>
+  <div class="multivalue-checkbox-box">
+    <div
+      *ngIf="control.value.value !== false"
+      [ngClass]="{ 'multivalue-checkbox-checked': control.value.value === true }"
+      [ngStyle]="{ 'background-color': !!control.value.value ? multicolor : '' }"
+      class="multivalue-checkbox-box-value w-100 h-100 d-flex align-items-center justify-content-center"
+    >
+      {{ control.value.name }}
+    </div>
+  </div>
+  <div [ngStyle]="{ color: multicolor }" class="multivalue-checkbox-title">
+    <ng-content></ng-content>
+  </div>
+</div>

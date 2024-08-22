@@ -1,0 +1,41 @@
+<div class="container-fluid d-flex flex-column h-100">
+  <div class="row">
+    <div class="col-12 d-flex justify-content-between flex-wrap">
+      <ng-content select="[viewSwitch]"></ng-content>
+      <div class="d-flex gap-4 mt-xxl-0 mt-4">
+        <button (click)="zoomOut()" class="btn btn-outline-primary px-5">
+          {{ 'chart_editor.zoom_out' | transloco }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row pt-4 flex-fill">
+    <div class="col-12">
+      <div class="bg-white rounded-border-card h-100">
+        <app-top-chart></app-top-chart>
+      </div>
+    </div>
+  </div>
+  <div class="row pt-4 flex-nowrap">
+    <div class="col">
+      <div
+        class="w-100 h-100 bg-white rounded-border-card p-4 d-flex justify-content-center align-items-center place-self-start"
+      >
+        <div class="w-100 h-100 position-relative">
+          <canvas
+            class="position-absolute w-100 h-100"
+            [class.d-none]="!showBigChart"
+            #selectedItem
+          ></canvas>
+          <div *ngIf="!showBigChart" class="position-absolute no-data w-100 h-100"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="bg-white rounded-border-card p-4">
+        <app-gallery-view></app-gallery-view>
+      </div>
+    </div>
+  </div>
+  <app-flexible-loading-layout *ngIf="loading"></app-flexible-loading-layout>
+</div>

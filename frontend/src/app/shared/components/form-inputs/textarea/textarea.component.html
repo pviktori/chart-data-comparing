@@ -1,0 +1,11 @@
+<div class="input-group w-100">
+  <label class="fw-bold">
+    <ng-content></ng-content>
+  </label>
+  <textarea
+    class="form-control w-100 py-2"
+    [placeholder]="placeholder | transloco"
+    [formControl]="control"
+    [ngClass]="{ error: !controlValid }"
+  ></textarea>
+</div>

@@ -1,0 +1,33 @@
+<div class="input-group w-100">
+  <label class="fw-bold"> {{ label | transloco }} </label>
+  <div ngbDropdown class="dropdown-form-input form-select w-100 p-2 ps-4">
+    <div
+      ngbDropdownToggle
+      class="d-flex align-items-center position-relative"
+      *ngIf="control.value"
+    >
+      <img
+        class="ds-icon position-absolute"
+        [src]="'./assets/images/' + control.value + '-icon.png'"
+      />
+      <span class="ds-title">{{ $any(dataBaseNames)[control.value] }}</span>
+    </div>
+    <div ngbDropdownToggle *ngIf="!control.value">No database</div>
+    <div ngbDropdownMenu>
+      <div
+        class="d-flex align-items-center"
+        (click)="control.setValue(database.key)"
+        ngbDropdownItem
+        *ngFor="let database of dataBaseNames | keyvalue"
+      >
+        <div class="p-2 position-relative">
+          <img
+            class="ds-icon position-absolute"
+            [src]="'./assets/images/' + database.key + '-icon.png'"
+          />
+          <span class="ds-title"> {{ database.value }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

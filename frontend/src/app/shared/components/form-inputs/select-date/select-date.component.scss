@@ -1,0 +1,121 @@
+.form-control {
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: #f0f0f1;
+  border-color: #f0f0f1;
+
+  &.outline {
+    border-color: #5d666f;
+    background-color: transparent;
+  }
+
+  &.light {
+    background-color: #fff;
+  }
+
+  &.disabled {
+    opacity: .5;
+  }
+}
+
+.date-picker-icon {
+  right: 0;
+  z-index: 99;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+
+  &.disabled {
+    opacity: .5;
+  }
+}
+
+.custom-day {
+  height: 2rem;
+  width: 2rem;
+  span {
+    transition: 0.2s;
+
+    &:hover {
+      background-color: #33a6dd;
+      color: white;
+    }
+  }
+  .focused {
+    background-color: #e6e6e6;
+  }
+  .range,
+  .range:hover {
+    background-color: #33a6dd;
+    color: white;
+  }
+  &.faded {
+    background-color: #33a6dd1a;
+    border-radius: 0;
+    color: inherit;
+    &.start {
+      border-top-left-radius: 50%;
+      border-bottom-left-radius: 50%;
+    }
+    &.end {
+      border-top-right-radius: 50%;
+      border-bottom-right-radius: 50%;
+    }
+  }
+}
+
+::ng-deep {
+  .input-group div {
+    margin-left: 0 !important;
+  }
+  .dropdown-menu {
+    * {
+      font-size: 12px !important;
+    }
+    .ngb-dp-arrow-btn {
+      color: inherit;
+    }
+    .ngb-dp-weekday {
+      font-style: normal;
+      color: inherit;
+    }
+    .ngb-dp-weekdays {
+      border-bottom: none;
+      background-color: transparent;
+    }
+    .ngb-dp-header {
+      background-color: transparent;
+    }
+    .ngb-tp {
+      * {
+        font-size: 10px !important;
+      }
+      .ngb-tp-meridian {
+        button {
+          padding-top: 0;
+          padding-bottom: 0;
+        }
+      }
+      .ngb-tp-chevron:before {
+        content: none;
+      }
+      .form-control {
+        padding: 0;
+      }
+      .ngb-tp-input-container {
+        button {
+          display: none;
+        }
+      }
+      .ngb-tp-input-container {
+        width: 2em;
+      }
+    }
+    .tp-error {
+      .ngb-tp-input {
+        border-color: red;
+      }
+    }
+  }
+}

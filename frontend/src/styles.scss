@@ -1,0 +1,14 @@
+@import './assets/styles/variables';
+
+/* You can add global styles to this file, and also import other style files */
+@import '@fontsource/oxygen';
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+@import '@fontsource/material-icons';
+@import '@fontsource/material-icons-rounded';
+@import '@fontsource/material-icons-outlined';
+@import '@fontsource/material-icons-sharp';
+@import '@fontsource/material-icons-two-tone';
+@import 'assets/styles/index.scss';
+@import '~jsoneditor/dist/jsoneditor.min.css';
+@import 'ngx-toastr/toastr';

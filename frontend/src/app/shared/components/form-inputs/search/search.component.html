@@ -1,0 +1,26 @@
+<div class="input-group w-100">
+  <label class="fw-bold">
+    <ng-content></ng-content>
+  </label>
+  <ng-container *transloco="let t">
+    <div class="position-relative w-100">
+      <input
+        type="text"
+        class="form-control"
+        [ngbTypeahead]="search"
+        [resultFormatter]="formatter"
+        [inputFormatter]="formatter"
+        [formControl]="control"
+        [resultTemplate]="rt"
+        placeholder="{{ t('common.form.search') }}"
+      />
+      <div class="position-absolute search-icon" role="button">
+        <i class="material-icons me-2 icon-size">search</i>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #rt let-r="result" let-t="term">
+  <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+</ng-template>

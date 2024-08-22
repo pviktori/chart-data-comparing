@@ -1,0 +1,36 @@
+<div class="w-100 position-relative input-group">
+  <label class="fw-bold">
+    <ng-content></ng-content>
+  </label>
+  <div class="d-flex gap-2 align-items-center">
+    <div>{{ min | number: '1.0-2' }}</div>
+    <div class="w-100 position-relative">
+      <input
+        type="range"
+        class="form-range"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [formControl]="control"
+      />
+      <div class="position-absolute range-track w-100"></div>
+      <div
+        class="position-absolute range-process"
+        [ngStyle]="{
+          width: rangeProgress + '%'
+        }"
+      ></div>
+      <div
+        class="position-absolute range-popup px-2"
+        [ngStyle]="{
+          left: rangeProgress + '%',
+          transform: 'translate(-' + rangeProgress + '%, 0)'
+        }"
+      >
+        {{ control.value | number: '1.0-2' }}
+      </div>
+    </div>
+    <div>{{ max | number: '1.0-2' }}</div>
+  </div>
+  <div class="position-absolute range-error" *ngIf="!controlValid">Invalid value</div>
+</div>

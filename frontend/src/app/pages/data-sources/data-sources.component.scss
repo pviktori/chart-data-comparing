@@ -1,0 +1,17 @@
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins';
+
+.bg-grey {
+  background-color: $gray-200;
+}
+
+h5 {
+  font-weight: bold;
+  color: #23272d;
+}
+
+.ds-icon {
+  width: 46px;
+  height: 46px;
+}

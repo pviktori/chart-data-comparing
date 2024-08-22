@@ -1,0 +1,25 @@
+input.form-control {
+  padding-left: 20px;
+  outline: none !important;
+  box-shadow: none !important;
+  background: #f0f0f1;
+  border-color: #f0f0f1;
+
+  &.error {
+    background-color: #fbe2e2;
+    border-color: #fbe2e2;
+  }
+
+  &.outline {
+    border-color: #5d666f;
+    background-color: transparent;
+  }
+
+  &.light {
+    background-color: #fff;
+  }
+
+  &.disabled {
+    opacity: 0.8;
+  }
+}

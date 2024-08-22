@@ -1,0 +1,31 @@
+{
+  "timeseries": [
+    {
+      "type": "influx",
+      "name": "Influx DB",
+      "description": "Open source time deries database."
+    },
+    {
+      "type": "timescale",
+      "name": "Timescale (Not implemented)",
+      "description": "Open source time deries database."
+    },
+    {
+      "type": "prometheus",
+      "name": "Prometheus (Not implemented)",
+      "description": "Open source time series database & alerting."
+    },
+    {
+      "type": "opentsdb",
+      "name": "OpenTSDB (Not implemented)",
+      "description": "Open source time deries database."
+    }
+  ],
+  "loggingDocument": [
+    {
+      "type": "loki",
+      "name": "Loki (Not implemented)",
+      "description": "Like prometheus but for logs. OSS logging solution from Grafana Labs."
+    }
+  ]
+}

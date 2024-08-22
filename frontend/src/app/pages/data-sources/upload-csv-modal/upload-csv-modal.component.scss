@@ -1,0 +1,23 @@
+.modal-header {
+    font-size: 20px;
+}
+
+.spinner-size {
+    width: 76px;
+    height: 76px;
+}
+
+.process-overlay {
+    top: 0;
+    left: 0;
+    z-index: 2;
+
+    .process-message {
+        font-size: 24px;
+    }
+
+    .process-description {
+        font-size: 14px;
+        padding: 0 50px;
+    }
+}

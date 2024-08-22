@@ -1,0 +1,33 @@
+body {
+  font-family: 'Oxygen', sans-serif;
+  font-size: 14px;
+  color: #454d59;
+  background-color: #efefef;
+}
+
+.form-control,
+.form-select,
+.btn {
+  font-size: 14px;
+  border-radius: 20px !important;
+}
+
+.btn-standard {
+  min-width: 220px;
+}
+
+.input-group {
+  label:not(:empty) {
+    margin-bottom: 10px;
+  }
+}
+
+.dropdown-toggle {
+  &:after {
+    content: none;
+  }
+}
+
+.bg-light-grey {
+  background-color: #efefef;
+}

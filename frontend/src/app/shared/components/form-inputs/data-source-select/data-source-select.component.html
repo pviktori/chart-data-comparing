@@ -1,0 +1,27 @@
+<div ngbDropdown class="input-group w-100 pb-4">
+  <label class="fw-bold"> {{ 'settings.data_source' | transloco }}*</label>
+  <div ngbDropdownToggle class="dropdown-form-input form-select w-100 ps-3">
+    <div class="d-flex align-items-center position-relative" *ngIf="control.value">
+      <img
+        class="ds-icon position-absolute"
+        [src]="'./assets/images/' + control.value.type + '-icon.png'"
+      />
+      <span class="ds-title">{{ control.value.name }}</span>
+    </div>
+    <div *ngIf="!control.value">No data Source</div>
+  </div>
+  <div ngbDropdownMenu>
+    <div
+      class="d-flex align-items-center"
+      (click)="control.setValue(ds)"
+      ngbDropdownItem
+      role="button"
+      *ngFor="let ds of (dataSources$ | async) || []"
+    >
+      <div class="p-2 position-relative">
+        <img class="ds-icon position-absolute" [src]="'./assets/images/' + ds.type + '-icon.png'" />
+        <span class="ds-title"> {{ ds.name }}</span>
+      </div>
+    </div>
+  </div>
+</div>

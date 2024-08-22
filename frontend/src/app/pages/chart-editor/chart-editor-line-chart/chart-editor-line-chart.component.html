@@ -1,0 +1,111 @@
+<div class="w-100 bg-white py-2 rounded-border-card h-100 overflow-hidden d-flex flex-column gap-3">
+  <div
+    class="d-flex justify-content-between px-3 pt-3 align-items-center"
+    *ngIf="showActionButtons"
+  >
+    <ng-content select="[viewSwitch]"></ng-content>
+
+    <div class="d-flex flex-column align-items-end">
+      <button (click)="zoomOut()" class="btn btn-outline-primary px-5">
+        {{ 'chart_editor.zoom_out' | transloco }}
+      </button>
+    </div>
+  </div>
+
+  <ng-template #paramTooltip>
+    <div class="text-start text-dark">
+      {{ 'chart_editor.this_feature_selection_does_not_impact_the_choices_made_in' | transloco }}
+      <b>{{ 'chart_editor.step' | transloco }} 2: Filter</b>.
+      {{ 'chart_editor.remove_feature_from_the_visualization' | transloco }}
+    </div>
+  </ng-template>
+
+  <ng-container *ngIf="featuresGroup">
+    <div
+      [formGroup]="featuresGroup"
+      class="d-flex gap-2 ms-auto justify-content-end px-3 align-items-center flex-wrap"
+    >
+      <i
+        class="material-icons mi-24 text-muted opacity-75"
+        [ngbTooltip]="paramTooltip"
+        type="button"
+        tooltipClass="custom-tooltip"
+      >
+        error
+      </i>
+
+      <ng-container *ngFor="let feature of features; let i = index">
+        <app-multivalue-checkbox
+          *ngIf="i < maxFeaturesLength"
+          [formControlName]="feature"
+          [list]="multivalueCheckboxList"
+          [multicolor]="lineChartColors[feature]"
+        >
+          {{ feature }},
+        </app-multivalue-checkbox>
+      </ng-container>
+      <ng-container *ngIf="features.length > maxFeaturesLength">
+        <span>...</span>
+        <div ngbDropdown>
+          <button ngbDropdownToggle class="btn btn-outline-primary px-3 py-1 all-features">
+            all
+          </button>
+          <div ngbDropdownMenu class="features-dropdown-menu">
+            <div [formGroup]="featuresGroup" class="px-3">
+              <ng-container *ngFor="let feature of features; let i = index">
+                <div class="pb-2" *ngIf="i >= maxFeaturesLength">
+                  <app-multivalue-checkbox
+                    [formControlName]="feature"
+                    [list]="multivalueCheckboxList"
+                    [multicolor]="lineChartColors[feature]"
+                  >
+                    {{ feature }}
+                  </app-multivalue-checkbox>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+  <div class="flex-fill p-2 pt-0 chart-wrapper position-relative">
+    <app-line-chart
+      *ngIf="chartData.length"
+      #lineChart
+      (addTimestamp)="newSeqEvent.emit($event)"
+      (zoomHandler)="zoomHandler($event)"
+      [inputData]="chartData"
+      [scales]="scales"
+      [timestamps]="timestamps"
+      [stealthMode]="stealthMode"
+      [chartHtmlWrapper]="chartHtmlWrapper"
+      (chartReady)="chartReady()"
+    ></app-line-chart>
+    <app-flexible-loading-layout
+      *ngIf="loading$ | async"
+      [message]="(loadingMessage$ | async) || ''"
+    ></app-flexible-loading-layout>
+
+    <!-- <div
+      *ngIf="loading$ | async"
+      class="spinner-wrapper position-absolute w-100 h-100 d-flex align-items-center justify-content-center spinner-wrapper bg-opacity-50 bg-white pb-5 flex-column"
+    >
+      <img src="assets/images/spinner.gif" class="spinner-size" />
+      {{ loadingMessage$ | async | transloco }}
+    </div> -->
+    <div
+      *ngIf="lineChartDataSets?.[0]?.data?.length === 0"
+      class="spinner-wrapper position-absolute w-100 h-100 d-flex align-items-center justify-content-center spinner-wrapper pb-5 flex-column"
+    >
+      <div
+        class="bg-white p-3 rounded-border-card d-flex flex-column align-items-center justify-content-center shadow gap-2"
+      >
+        {{ 'common.no_data' | transloco }}
+        <button (click)="noDataHandler()" class="btn btn-outline-primary px-5">
+          {{ 'chart_editor.zoom_out' | transloco }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

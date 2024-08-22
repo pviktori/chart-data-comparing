@@ -1,0 +1,23 @@
+<div class="w-100 input-group" [class.justify-content-between]="isBoolean">
+  <label class="fw-bold">
+    <ng-content></ng-content>
+  </label>
+  <div
+    class="form-control d-flex no-wrap p-1"
+    [class.selected-boolean]="control.value === true"
+    [class.boolean]="isBoolean"
+    (click)="isBoolean && setValue()"
+  >
+    <div
+      class="switch-item py-1 px-2 text-center"
+      role="button"
+      [class.bg-white]="control.value === item.value"
+      [class.selected]="control.value === item.value"
+      [class.circle]="!item.name"
+      *ngFor="let item of list"
+      (click)="!isBoolean && setValue(item)"
+    >
+      {{ item.name }}
+    </div>
+  </div>
+</div>

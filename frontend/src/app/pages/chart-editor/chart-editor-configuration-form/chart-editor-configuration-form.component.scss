@@ -1,0 +1,74 @@
+.badge {
+    background-color: #e2e2e3;
+    width: 20px;
+    height: 20px;
+}
+
+.reset-model-settings {
+    color: rgb(220, 53, 69);
+    font-size: 12px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    position: absolute;
+    right: 10px;
+    font-weight: bold;
+    z-index: 1;
+    top: 0px;
+}
+
+.material-icons.tooltip-icon {
+    font-size: 18px;
+    color: #b5b8bd;
+}
+
+.chart-editor-middle-section {
+    flex: 1 1 auto;
+}
+
+.list-group-item.old-value::after {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #39B5FB;
+    border-radius: 15px;
+    right: -5px;
+    top: -5px;
+    content: '';
+}
+
+.model-section {
+    // background-color: #f5f5f5;
+    flex: 1 1 auto;
+}
+
+.material-icons.small-icon {
+    font-size: 16px;
+}
+
+.edit-icon {
+    font-size: 12px;
+}
+
+.ds-icon {
+    width: 26px;
+    height: 26px;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 10px;
+}
+
+.ds-title {
+    padding-left: 30px;
+}
+
+.dropdown-form-input {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.annotation-circle {
+    width: 10px;
+    height: 10px;
+}
